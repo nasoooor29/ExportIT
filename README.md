@@ -79,7 +79,7 @@ Use "appName [command] --help" for more information about a command.
 		- string
 		- int
 		- bool
-*   only work with named arguments
+*   **currently** only work with named arguments
 *   can't pipe things into it 
 
 
