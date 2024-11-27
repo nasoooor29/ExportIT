@@ -1,6 +1,6 @@
 # ExportIt
------
-## What is it?
+
+## What is this?
 Just write your function, and you'll have a CLI tool-no need to worry about flags, figuring out their names, or creating a config struct to manage them. Simply focus on the function, and let me take care of the rest.
 
 
@@ -21,8 +21,6 @@ func Curl(link string) (string, error) {
 }
 
 func Cat(path string) (string, error) {
-	fmt.Println("mama")
-
 	data, err := os.ReadFile(path)
 	if err != nil {
 		return "", err
@@ -55,7 +53,7 @@ func main() {
 
 ```
 3. you are done!!
-```sh
+```
 ❯ go build
 ❯ ./ExportIT
 Long Description
@@ -76,7 +74,7 @@ Use "appName [command] --help" for more information about a command.
 ❯ 
 ```
 
-## what is the caviat?
+## what is the catch?
 *	currently it work only with simple data types 
 		- string
 		- int
