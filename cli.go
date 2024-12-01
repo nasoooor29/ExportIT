@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"go/ast"
 	"reflect"
+	"slices"
 	"strings"
 
 	"github.com/spf13/cobra"
@@ -77,14 +78,12 @@ func iterParamsByFunc(
 	params := getFuncParams(fnAst)
 	values := []reflect.Value{}
 	shorts := GenerateShorthands(params)
+	fmt.Printf("params: %v\n", params)
+	fmt.Printf("shorts: %v\n", shorts)
 	for i, param := range params {
 		pType := fn.In(i)
 		val := reflect.New(pType).Elem().Interface()
-		short, found := shorts[param]
-		if !found {
-			return nil, fmt.Errorf("%v does not have a shorthand", param)
-
-		}
+		short := string(shorts[i])
 
 		err := f(param, short, &val)
 		if err != nil {
@@ -141,31 +140,20 @@ func getParamFromFlag(set *pflag.FlagSet, pName string, val *any) error {
 	return nil
 }
 
-func GenerateShorthands(args []string) map[string]string {
-	shorthands := make(map[string]string)
+// GenerateShorthands takes an array of command line argument names and returns a list of shorthands.
+func GenerateShorthands(args []string) []rune {
+	var shorthands []rune
 
 	for _, arg := range args {
-		if len(arg) > 1 {
-			// Create shorthand: start with the first character
-			shorthand := string(arg[0])
-
-			// Ensure shorthands are unique
-			count := 1
-			for {
-				if _, exists := shorthands[shorthand]; exists {
-					// Append the next character if the shorthand already exists
-					if count < len(arg) {
-						shorthand = string(arg[:count+1])
-					} else {
-						break
-					}
-					count++
-				} else {
-					break
-				}
+		if len(arg) < 1 {
+			continue
+		}
+		for _, short := range arg {
+			found := slices.Contains(shorthands, rune(short))
+			if !found {
+				shorthands = append(shorthands, short)
+				break
 			}
-
-			shorthands[shorthand] = arg
 		}
 	}
 
