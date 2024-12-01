@@ -78,8 +78,6 @@ func iterParamsByFunc(
 	params := getFuncParams(fnAst)
 	values := []reflect.Value{}
 	shorts := GenerateShorthands(params)
-	fmt.Printf("params: %v\n", params)
-	fmt.Printf("shorts: %v\n", shorts)
 	for i, param := range params {
 		pType := fn.In(i)
 		val := reflect.New(pType).Elem().Interface()
