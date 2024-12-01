@@ -88,5 +88,5 @@ Use "appName [command] --help" for more information about a command.
 * cli for init sample
 * arg first uppercase rune means required cli arg
 * add positional args function
-* instead of pos args func <FIRST LETTER for req>whatever the arg<POSARG> example "UrlP0S"
+* instead of pos args func [`FIRST LETTER for req`]whateverTheArg[`P0S`] example \"UrlP0S\"
 
