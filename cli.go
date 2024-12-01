@@ -76,10 +76,16 @@ func iterParamsByFunc(
 	}
 	params := getFuncParams(fnAst)
 	values := []reflect.Value{}
+	shorts := GenerateShorthands(params)
 	for i, param := range params {
 		pType := fn.In(i)
 		val := reflect.New(pType).Elem().Interface()
-		short := getShorthand(param)
+		short, found := shorts[param]
+		if !found {
+			return nil, fmt.Errorf("%v does not have a shorthand", param)
+
+		}
+
 		err := f(param, short, &val)
 		if err != nil {
 			return nil, err
@@ -135,6 +141,33 @@ func getParamFromFlag(set *pflag.FlagSet, pName string, val *any) error {
 	return nil
 }
 
-func getShorthand(s string) string {
-	return string(s[0])
+func GenerateShorthands(args []string) map[string]string {
+	shorthands := make(map[string]string)
+
+	for _, arg := range args {
+		if len(arg) > 1 {
+			// Create shorthand: start with the first character
+			shorthand := string(arg[0])
+
+			// Ensure shorthands are unique
+			count := 1
+			for {
+				if _, exists := shorthands[shorthand]; exists {
+					// Append the next character if the shorthand already exists
+					if count < len(arg) {
+						shorthand = string(arg[:count+1])
+					} else {
+						break
+					}
+					count++
+				} else {
+					break
+				}
+			}
+
+			shorthands[shorthand] = arg
+		}
+	}
+
+	return shorthands
 }
