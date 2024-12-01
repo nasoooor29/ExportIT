@@ -84,4 +84,9 @@ Use "appName [command] --help" for more information about a command.
 
 
 ## todos:
-* better shorthand naming
+* ~better shorthand naming~
+* cli for init sample
+* arg first uppercase rune means required cli arg
+* add positional args function
+* instead of pos args func <FIRST LETTER for req>whatever the arg<POSARG> example "UrlP0S"
+
